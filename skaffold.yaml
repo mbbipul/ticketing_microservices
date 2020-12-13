@@ -1,18 +1,17 @@
-apiVersion: skaffold/v2alpha3
+apiVersion: skaffold/v2beta8
 kind: Config
+metadata:
+  name: ticketing
+build:
+  artifacts:
+  - image: bbbipul/auth_t
+    context: auth
+  - image: bbbipul/client_t
+    context: client
 deploy:
   kubectl:
     manifests:
-      - ./infra/k8s/*
-build:
-  local:
-    push: false
-  artifacts:
-    - image: bbbipul/auth
-      context: auth
-      docker:
-        dockerfile: Dockerfile
-      sync:
-        manual:
-          - src: 'src/**/*.ts'
-            dest: .
+    - infra/k8s/auth-depl.yaml
+    - infra/k8s/auth-mongo-depl.yaml
+    - infra/k8s/client-depl.yaml
+    - infra/k8s/ingress-srv.yaml
