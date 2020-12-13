@@ -1,6 +1,8 @@
 import request from 'supertest';
 import { app } from '../../app';
 
+jest.setTimeout(30000);
+
 it('fails when a email that does not exist is supplied', async () => {
   await request(app)
     .post('/api/users/signin')

@@ -8,10 +8,9 @@ build:
     context: auth
   - image: bbbipul/client_t
     context: client
+  - image: bbbipul/tickets
+    context: tickets
 deploy:
   kubectl:
     manifests:
-    - infra/k8s/auth-depl.yaml
-    - infra/k8s/auth-mongo-depl.yaml
-    - infra/k8s/client-depl.yaml
-    - infra/k8s/ingress-srv.yaml
+    - infra/k8s/*
