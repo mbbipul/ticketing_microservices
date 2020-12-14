@@ -7,8 +7,7 @@ import { currentUserRouter } from './routes/current-user';
 import { signinRouter } from './routes/signin';
 import { signoutRouter } from './routes/signout';
 import { signupRouter } from './routes/signup';
-import { errorHandler } from '@bb_dev/ticketting_common';
-import { NotFoundError } from '@bb_dev/ticketting_common';
+import { errorHandler, NotFoundError } from '@bb_dev/ticketing_common_service';
 
 const app = express();
 app.set('trust proxy', true);

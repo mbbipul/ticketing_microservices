@@ -1,5 +1,5 @@
 import express from 'express';
-import { currentUser } from '@bb_dev/ticketting_common';
+import { currentUser } from '@bb_dev/ticketing_common_service';
 
 const router = express.Router();
 

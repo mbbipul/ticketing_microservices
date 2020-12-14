@@ -1,5 +1,5 @@
 {
-  "name": "@bb_dev/ticketting_common",
+  "name": "@bb_dev/ticketing_common_service",
   "version": "1.0.2",
   "description": "",
   "main": "./build/index.js",
