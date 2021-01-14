@@ -1,5 +1,6 @@
 import request from 'supertest';
 import { app } from '../../app';
+import { natasWrapper } from '../../nats-wrapper';
 
 it('returns a 404 if the provided id does not exist', async () => {
     await request(app)
@@ -105,3 +106,27 @@ it('updates the ticket provided valid inputs' , async () => {
     expect(tikcetResponse.body.title).toEqual("concert 2");
     expect(tikcetResponse.body.price).toEqual(100);
 });
+
+it('publishes an event', async () => {
+    const cookie = global.signin();
+
+    const response = await request(app)
+        .post('/api/tickets')
+        .set('Cookie',cookie)
+        .send({
+            title: "concert",
+            price : 20
+        });
+    
+    await request(app)
+        .put(`/api/tickets/${response.body.id}`)
+        .set('Cookie',cookie)
+        .send({
+            title : "concert 2",
+            price : 100
+        })
+        .expect(200);
+    
+  
+      expect(natasWrapper.client.publish).toBeCalled()
+  });
