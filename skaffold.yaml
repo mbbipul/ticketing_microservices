@@ -10,6 +10,8 @@ build:
     context: client
   - image: bbbipul/tickets
     context: tickets
+  - image: bbbipul/orders
+    context: orders
 deploy:
   kubectl:
     manifests:
