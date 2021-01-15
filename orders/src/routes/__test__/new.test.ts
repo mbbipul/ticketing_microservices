@@ -3,6 +3,7 @@ import request from 'supertest';
 import { app } from '../../app';
 import { Order } from '../../models/order';
 import { Ticket } from '../../models/ticket';
+import { natasWrapper } from '../../nats-wrapper';
 
 it('has a route handler listening to /api/orders for post requests', async () => {
   const response = await request(app).post('/api/orders').send({});
@@ -93,4 +94,21 @@ it('reserves a ticket', async () => {
     expect(res.body.ticket.id).toEqual(ticket.id);
 });
 
-it.todo('emits an order created event');
+it('emits an order created event', async () => {
+	const ticket = Ticket.build({
+		title: 'concert',
+		price: 20
+	});
+	await ticket.save();
+
+	const res = await request(app)
+	.post('/api/orders')
+	.set('Cookie',global.signin())
+	.send({
+		ticketId: ticket.id
+	})
+	.expect(201);
+
+	expect(natasWrapper.client.publish).toHaveBeenCalled();
+
+});

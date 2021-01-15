@@ -9,7 +9,7 @@ interface TicketAttrs {
 
 interface TicketDoc extends mongoose.Document {
     title: string,
-    price: string,
+    price: number,
     isReserved(): Promise<boolean>;
 }
 
