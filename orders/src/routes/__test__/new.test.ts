@@ -3,7 +3,7 @@ import request from 'supertest';
 import { app } from '../../app';
 import { Order } from '../../models/order';
 import { Ticket } from '../../models/ticket';
-import { natasWrapper } from '../../nats-wrapper';
+import { natsWrapper } from '../../nats-wrapper';
 
 it('has a route handler listening to /api/orders for post requests', async () => {
   const response = await request(app).post('/api/orders').send({});
@@ -109,6 +109,6 @@ it('emits an order created event', async () => {
 	})
 	.expect(201);
 
-	expect(natasWrapper.client.publish).toHaveBeenCalled();
+	expect(natsWrapper.client.publish).toHaveBeenCalled();
 
 });

@@ -3,14 +3,15 @@ import mongoose from 'mongoose';
 import { Order } from './order';
 
 interface TicketAttrs {
-    title: string,
-    price: number
+    id? : string;
+    title: string;
+    price: number;
 }
 
 interface TicketDoc extends mongoose.Document {
-    title: string,
-    price: number,
-    isReserved(): Promise<boolean>;
+    title: string;
+    price: number;
+    isReserved(tik: TicketDoc): Promise<boolean>;
 }
 
 interface TicketModel extends mongoose.Model<TicketDoc> {
@@ -37,12 +38,16 @@ const schema = new mongoose.Schema({
 });
 
 schema.statics.build = (attrs: TicketAttrs) => {
-    return new Ticket(attrs);
+    return new Ticket({
+		_id: attrs.id,
+		title: attrs.title,
+		price: attrs.price
+	});
 };
 
-schema.methods.isReserved = async function(){
+schema.methods.isReserved = async function(tik : TicketDoc) {
     const isOrderExist = await Order.findOne({
-        ticket: this,
+        ticket: tik,
         status: {
             $in: [
                 OrderStatus.Cretaed,

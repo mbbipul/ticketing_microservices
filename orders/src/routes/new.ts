@@ -2,10 +2,10 @@ import mongoose from 'mongoose';
 import { BadRequestError, NotFoundError, OrderStatus, requireAuth, validateRequest } from '@bb_dev/ticketing_common_service';
 import express , { Request , Response } from 'express';
 import { body } from 'express-validator';
-import { Ticket } from '../models/ticket';
 import { Order } from '../models/order';
 import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher';
-import { natasWrapper } from '../nats-wrapper';
+import { natsWrapper } from '../nats-wrapper';
+import { Ticket } from '../models/ticket';
 
 const router = express.Router();
 
@@ -30,9 +30,9 @@ router.post(
             throw new NotFoundError();
         }
         
-        const isReserved = await ticket.isReserved();
+        const isReserved = await ticket.isReserved(ticket);
         if(isReserved){
-            throw new BadRequestError("Ticket is already reserved");
+            throw new BadRequestError("Ticket is already reserved ");
         }
 
         const expiration = new Date();
@@ -46,7 +46,7 @@ router.post(
         });
         await order.save();
 
-        new OrderCreatedPublisher(natasWrapper.client).publish({
+        new OrderCreatedPublisher(natsWrapper.client).publish({
             id: order.id!,
             status: order.status,
             userId: order.userId,

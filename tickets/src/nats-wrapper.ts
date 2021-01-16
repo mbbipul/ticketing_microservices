@@ -13,7 +13,7 @@ class NatsWrapper {
         
         return new Promise((resolve,reject) => {
             this.client.on('connect', () => {
-                console.log('Connected to NTAS');
+                console.log('Connected to NTAS server');
                 resolve(0);
             });
             this.client!.on('error', (err) => {
