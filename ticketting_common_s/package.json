@@ -1,6 +1,6 @@
 {
   "name": "@bb_dev/ticketing_common_service",
-  "version": "1.0.6",
+  "version": "1.0.10",
   "description": "",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",

@@ -4,6 +4,7 @@ import { app } from '../../app';
 import { Order } from '../../models/order';
 import { Ticket } from '../../models/ticket';
 import { natsWrapper } from '../../nats-wrapper';
+import mongoose from 'mongoose';
 
 it('has a route handler listening to /api/orders for post requests', async () => {
   const response = await request(app).post('/api/orders').send({});
@@ -54,6 +55,7 @@ it('returns an error if the ticket does not exist', async () => {
 
 it('returns an error if the ticket already reserved', async () => {
     const ticket = Ticket.build({
+        id: mongoose.Types.ObjectId().toHexString(),
         title: 'concert',
         price: 20
     });
@@ -78,6 +80,7 @@ it('returns an error if the ticket already reserved', async () => {
 
 it('reserves a ticket', async () => {
     const ticket = Ticket.build({
+		id: mongoose.Types.ObjectId().toHexString(),
         title: 'concert',
         price: 20
     });
@@ -96,6 +99,7 @@ it('reserves a ticket', async () => {
 
 it('emits an order created event', async () => {
 	const ticket = Ticket.build({
+		id: mongoose.Types.ObjectId().toHexString(),
 		title: 'concert',
 		price: 20
 	});
